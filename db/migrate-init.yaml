@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-init
+  # Note: argocd here "1"
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  completions: 1
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: run
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - image: vinhdev1/example-crawler-migrate
+          name: migrate-init
+          command:
+          - "/app/run"
+          - "init"
+          env:
+            - name: POSTGRES_DNS
+              value: postgres://crawler:do02lab@postgres-0.postgres-headless:5432/crawler?sslmode=disable
