@@ -6,14 +6,15 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
-  completions: 1
-  ttlSecondsAfterFinished: 100
+  ttlSecondsAfterFinished: 20
+  # completions: 1
+  backoffLimit: 1
   template:
     metadata:
       labels:
         app: run
     spec:
-      restartPolicy: OnFailure
+      restartPolicy: Never
       containers:
         - image: vinhdev1/example-crawler-migrate
           name: migrate-init
